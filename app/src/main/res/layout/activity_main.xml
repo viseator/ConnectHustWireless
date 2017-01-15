@@ -6,12 +6,30 @@
     android:layout_height="match_parent"
     tools:context="com.viseator.connecthustwireless.MainActivity">
 
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="@string/username" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userName"
+        android:layout_margin="10dp"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
     <Button
         android:id="@+id/startButton"
-        android:layout_centerVertical="true"
-        android:layout_margin="20dp"
-        android:text="@string/Connect"
-        android:textSize="25sp"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="60dp"
+        android:layout_below="@id/password"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:text="@string/Connect"
+        android:textSize="25sp" />
 </RelativeLayout>

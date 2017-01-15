@@ -1,11 +1,13 @@
 package com.viseator.connecthustwireless;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -21,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "vir MainActivity";
     @BindView(R.id.startButton)
     Button button;
+    @BindView(R.id.userName)
+    EditText userName;
+    @BindView(R.id.password)
+    EditText password;
+    SharedPreferences sharedPreferences;
     private NetworkTask networkTask;
     private Handler handler = new Handler() {
         @Override
@@ -41,10 +48,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        sharedPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
+        userName.setText(sharedPreferences.getString("userName", null));
+        password.setText(sharedPreferences.getString("password", null));
     }
 
     @OnClick(R.id.startButton)
     public void start() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userName", userName.getText().toString());
+        editor.putString("password", password.getText().toString());
+        editor.apply();
         networkTask = new NetworkTask(handler);
         networkTask.testNet(false);
     }
@@ -61,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
             if (matcher.find()) {
                 String queryString = matcher.group(1);
                 Log.d(TAG, queryString);
-                networkTask.startAuthenticate(queryString);
+                networkTask.startAuthenticate(queryString,
+                        sharedPreferences.getString("userName", null),
+                        sharedPreferences.getString("password", null));
                 networkTask.testNet(true);
             }
 
@@ -74,4 +90,9 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "现在可以正常上网", Toast.LENGTH_LONG).show();
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

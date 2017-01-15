@@ -31,6 +31,8 @@ public class NetworkTask {
     private String queryString;
     private Handler handler;
     boolean isTest;
+    private String userName;
+    private String passwd;
 
     public NetworkTask(Handler handler) {
         this.handler = handler;
@@ -77,8 +79,8 @@ public class NetworkTask {
         public void run() {
             OkHttpClient client = new OkHttpClient();
             RequestBody requestBody = new FormBody.Builder()
-                    .add("userId", "todo")
-                    .add("password", "todo")//
+                    .add("userId", userName)
+                    .add("password", passwd)
                     .add("queryString", queryString)
                     .add("service", "")
                     .add("operatorPwd", "")
@@ -103,7 +105,9 @@ public class NetworkTask {
         thread.start();
     }
 
-    public void startAuthenticate(String queryString) {
+    public void startAuthenticate(String queryString,String userName,String passwd) {
+        this.userName = userName;
+        this.passwd = passwd;
         this.queryString = queryString;
         Thread thread = new Thread(new StartAuthenticate());
         thread.start();
