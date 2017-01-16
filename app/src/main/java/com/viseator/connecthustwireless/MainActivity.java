@@ -28,20 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.password)
     EditText password;
     SharedPreferences sharedPreferences;
-    private NetworkTask networkTask;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case NetworkTask.CONNECT_NETWORK:
-                    handleResponse((String) msg.obj);
-                    break;
-                case NetworkTask.TEST_NETWORK:
-                    makeToast();
-                default:
-            }
-        }
-    };
+    ConnectHust connectHust;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
         userName.setText(sharedPreferences.getString("userName", null));
         password.setText(sharedPreferences.getString("password", null));
+        connectHust = new ConnectHust(this);
     }
 
     @OnClick(R.id.startButton)
@@ -59,40 +47,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("userName", userName.getText().toString());
         editor.putString("password", password.getText().toString());
         editor.apply();
-        networkTask = new NetworkTask(handler);
-        networkTask.testNet(false);
+        connectHust.start(sharedPreferences);
     }
 
-    private void handleResponse(String response) {
-
-        if (response.contains("baidu")) {
-            makeToast();
-        } else if (response.contains("eportal")) {
-            Toast.makeText(this, "认证中", Toast.LENGTH_SHORT).show();
-            String reg = "href=.*?\\?(.*?)'";
-            Pattern pattern = Pattern.compile(reg);
-            Matcher matcher = pattern.matcher(response);
-            if (matcher.find()) {
-                String queryString = matcher.group(1);
-                Log.d(TAG, queryString);
-                networkTask.startAuthenticate(queryString,
-                        sharedPreferences.getString("userName", null),
-                        sharedPreferences.getString("password", null));
-                networkTask.testNet(true);
-            }
-
-
-        }
-
-    }
-
-    private void makeToast() {
-        Toast.makeText(this, "现在可以正常上网", Toast.LENGTH_LONG).show();
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 }
