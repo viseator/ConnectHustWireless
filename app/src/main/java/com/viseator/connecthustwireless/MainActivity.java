@@ -1,10 +1,14 @@
 package com.viseator.connecthustwireless;
 
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         userName.setText(sharedPreferences.getString("userName", null));
         password.setText(sharedPreferences.getString("password", null));
         connectHust = new ConnectHust(this);
+
     }
 
     @OnClick(R.id.startButton)
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("userName", userName.getText().toString());
         editor.putString("password", password.getText().toString());
         editor.apply();
-        connectHust.start(sharedPreferences);
+        if(connectHust.checkStatus()) connectHust.start(sharedPreferences);
     }
 
 }

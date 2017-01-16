@@ -2,6 +2,9 @@ package com.viseator.connecthustwireless;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -9,8 +12,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.content.Context.WIFI_SERVICE;
 
 /**
  * Created by viseator on 1/16/17.
@@ -42,11 +48,42 @@ public class ConnectHust {
     public ConnectHust(Context context) {
         this.context = context;
         networkTask = new NetworkTask(handler);
+
     }
+
+    public boolean checkStatus() {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
+        if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
+            Toast.makeText(context, "正在开启wifi", Toast.LENGTH_SHORT).show();
+            wifiManager.setWifiEnabled(true);
+        }
+
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        Log.d(TAG, wifiInfo.getSSID());
+        if (!wifiInfo.getSSID().equals("\"HUST_WIRELESS\"")) {
+            Toast.makeText(context, "正在连接到校园网", Toast.LENGTH_SHORT).show();
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            List<ScanResult> scanResults = wifiManager.getScanResults();
+            for (ScanResult scanResult : scanResults) {
+                Log.d(TAG, scanResult.SSID);
+            }
+
+        }
+        List<ScanResult> scanResults = wifiManager.getScanResults();
+        for (ScanResult scanResult : scanResults) {
+            Log.d(TAG, scanResult.SSID);
+        }
+        return false;
+    }
+
 
     public void start(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-        Toast.makeText(context, "测试连接...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "测试连接...", Toast.LENGTH_LONG).show();
         networkTask.testNet();
 
     }
