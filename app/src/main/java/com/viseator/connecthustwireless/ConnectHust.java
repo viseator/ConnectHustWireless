@@ -30,6 +30,7 @@ public class ConnectHust {
     private NetworkTask networkTask;
     private SharedPreferences sharedPreferences;
     private Context context;
+    private WifiManager wifiManager;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -53,7 +54,7 @@ public class ConnectHust {
     }
 
     public boolean checkStatus() {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
+        wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
             Toast.makeText(context, "请开启wifi", Toast.LENGTH_SHORT).show();
             return false;
@@ -104,6 +105,9 @@ public class ConnectHust {
 
     public void start(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
+        if (!wifiManager.getConnectionInfo().getSSID().equals("\"HUST_WIRELESS\"")) {
+            Toast.makeText(context, "请连接到HUST_WIRELESS后重试", Toast.LENGTH_SHORT).show();
+        }
         Toast.makeText(context, "测试连接...", Toast.LENGTH_LONG).show();
         networkTask.testNet();
 

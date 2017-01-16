@@ -1,11 +1,16 @@
 package com.viseator.connecthustwireless;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -18,6 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class VirAppWidgetProvider extends AppWidgetProvider {
+    private static final String TAG = "viseator WidgetProvider";
     public static final String RECEIVE_CLICK = "ReceiveClick";
     private ConnectHust connectHust;
     private SharedPreferences sharedPreferences;
@@ -26,7 +32,7 @@ public class VirAppWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int N = appWidgetIds.length;
 
-        for (int i=0; i<N; i++) {
+        for (int i = 0; i < N; i++) {
             int appWidgetId = appWidgetIds[i];
 
             Intent intent = new Intent(context, VirAppWidgetProvider.class);
@@ -46,10 +52,12 @@ public class VirAppWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         if (intent.getAction().equals(RECEIVE_CLICK)) {
             connectHust = new ConnectHust(context);
-            sharedPreferences= context.getSharedPreferences("userInfo", MODE_PRIVATE);
-            connectHust.start(sharedPreferences);
-            
+            sharedPreferences = context.getSharedPreferences("userInfo", MODE_PRIVATE);
+            if (connectHust.checkStatus()) connectHust.start(sharedPreferences);
+
         }
     }
 
+
 }
+
