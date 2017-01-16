@@ -24,7 +24,7 @@ import okhttp3.Response;
 
 public class NetworkTask {
 
-    private static final String TAG = "vir NetworkTask";
+    private static final String TAG = "virseator NetworkTask";
     public static final String REQUEST_URL = "http://192.168.50.3:8080/eportal/InterFace.do?method=login";
     public static final int CONNECT_NETWORK = 0;
     public static final int RESULT = 1;

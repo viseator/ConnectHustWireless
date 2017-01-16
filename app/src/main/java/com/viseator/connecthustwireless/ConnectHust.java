@@ -3,6 +3,7 @@ package com.viseator.connecthustwireless;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
@@ -25,7 +26,7 @@ import static android.content.Context.WIFI_SERVICE;
  */
 
 public class ConnectHust {
-    private static final String TAG = "vir ConnectHust";
+    private static final String TAG = "viseator ConnectHust";
     private NetworkTask networkTask;
     private SharedPreferences sharedPreferences;
     private Context context;
@@ -54,30 +55,50 @@ public class ConnectHust {
     public boolean checkStatus() {
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
-            Toast.makeText(context, "正在开启wifi", Toast.LENGTH_SHORT).show();
-            wifiManager.setWifiEnabled(true);
+            Toast.makeText(context, "请开启wifi", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         Log.d(TAG, wifiInfo.getSSID());
         if (!wifiInfo.getSSID().equals("\"HUST_WIRELESS\"")) {
             Toast.makeText(context, "正在连接到校园网", Toast.LENGTH_SHORT).show();
-//            try {
-//                Thread.sleep(3000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
             List<ScanResult> scanResults = wifiManager.getScanResults();
+            boolean findHust = false;
             for (ScanResult scanResult : scanResults) {
                 Log.d(TAG, scanResult.SSID);
+                if (scanResult.SSID.equals("HUST_WIRELESS")) findHust = true;
+            }
+            if (!findHust) {
+                Toast.makeText(context, "未发现HUST_WIRELESS", Toast.LENGTH_SHORT).show();
+                return false;
             }
 
+            List<WifiConfiguration> wifiConfigurations = wifiManager.getConfiguredNetworks();
+            int networkId = -1;
+            for (WifiConfiguration wifiConfiguration : wifiConfigurations) {
+                if (wifiConfiguration.SSID.equals("\"HUST_WIRELESS\"")) {
+                    networkId = wifiConfiguration.networkId;
+                    break;
+                }
+            }
+            if (networkId == -1) {
+                Toast.makeText(context, "请手动连接HUST_WIRELESS", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            wifiManager.enableNetwork(networkId, true);
+            while (!wifiManager.getConnectionInfo().getSSID().equals("\"HUST_WIRELESS\"")) {
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            return true;
         }
-        List<ScanResult> scanResults = wifiManager.getScanResults();
-        for (ScanResult scanResult : scanResults) {
-            Log.d(TAG, scanResult.SSID);
-        }
-        return false;
     }
 
 

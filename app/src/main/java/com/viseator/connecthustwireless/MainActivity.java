@@ -1,14 +1,15 @@
 package com.viseator.connecthustwireless;
 
+import android.Manifest;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,7 +18,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "vir MainActivity";
+    private static final String TAG = "viseator MainActivity";
     @BindView(R.id.startButton)
     Button button;
     @BindView(R.id.userName)
@@ -32,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        checkPermission();
         sharedPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
         userName.setText(sharedPreferences.getString("userName", null));
         password.setText(sharedPreferences.getString("password", null));
         connectHust = new ConnectHust(this);
-
     }
 
     @OnClick(R.id.startButton)
@@ -48,4 +49,16 @@ public class MainActivity extends AppCompatActivity {
         if(connectHust.checkStatus()) connectHust.start(sharedPreferences);
     }
 
+    public void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION},0);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        checkPermission();
+    }
 }
