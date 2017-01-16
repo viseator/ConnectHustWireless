@@ -1,6 +1,7 @@
 package com.viseator.connecthustwireless;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "viseator MainActivity";
     @BindView(R.id.startButton)
     Button button;
+    @BindView(R.id.startServiceButton)
+    Button startService;
     @BindView(R.id.userName)
     EditText userName;
     @BindView(R.id.password)
@@ -48,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         if(connectHust.checkStatus()) connectHust.start(sharedPreferences);
     }
+
+    @OnClick(R.id.startServiceButton)
+    public void startService() {
+        Intent intent = new Intent(this, AutoAuthenService.class);
+        startService(intent);
+    }
+
 
     public void checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=

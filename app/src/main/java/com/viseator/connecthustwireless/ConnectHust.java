@@ -50,11 +50,10 @@ public class ConnectHust {
     public ConnectHust(Context context) {
         this.context = context;
         networkTask = new NetworkTask(handler);
-
+        wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
     }
 
     public boolean checkStatus() {
-        wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
             Toast.makeText(context, "请开启wifi", Toast.LENGTH_SHORT).show();
             return false;

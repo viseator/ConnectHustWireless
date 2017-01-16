@@ -3,4 +3,5 @@
     <string name="Connect">认证</string>
     <string name="username">用户名/学号</string>
     <string name="password">密码</string>
+    <string name="startService">开启自动认证</string>
 </resources>
