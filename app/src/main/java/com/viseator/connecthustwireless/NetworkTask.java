@@ -27,10 +27,9 @@ public class NetworkTask {
     private static final String TAG = "vir NetworkTask";
     public static final String REQUEST_URL = "http://192.168.50.3:8080/eportal/InterFace.do?method=login";
     public static final int CONNECT_NETWORK = 0;
-    public static final int TEST_NETWORK = 1;
+    public static final int RESULT = 1;
     private String queryString;
     private Handler handler;
-    boolean isTest;
     private String userName;
     private String passwd;
 
@@ -61,7 +60,7 @@ public class NetworkTask {
                     response = stringBuilder.toString();
                 }
                 Message msg = Message.obtain();
-                msg.what = isTest ? TEST_NETWORK : CONNECT_NETWORK;
+                msg.what = CONNECT_NETWORK;
                 msg.obj = response;
                 handler.sendMessage(msg);
             } catch (IOException e) {
@@ -92,20 +91,23 @@ public class NetworkTask {
                     .build();
             try {
                 Response response = client.newCall(request).execute();
-                Log.d(TAG, response.toString());
+                Message msg = Message.obtain();
+                msg.what  = RESULT;
+                msg.obj = response.body().string();
+                handler.sendMessage(msg);
             } catch (IOException e) {
                 e.printStackTrace();
+
             }
         }
     }
 
-    public void testNet(boolean isTest) {
-        this.isTest = isTest;
+    public void testNet() {
         Thread thread = new Thread(new TestNet());
         thread.start();
     }
 
-    public void startAuthenticate(String queryString,String userName,String passwd) {
+    public void startAuthenticate(String queryString, String userName, String passwd) {
         this.userName = userName;
         this.passwd = passwd;
         this.queryString = queryString;

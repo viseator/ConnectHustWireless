@@ -45,7 +45,6 @@ public class VirAppWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (intent.getAction().equals(RECEIVE_CLICK)) {
-            Toast.makeText(context, "测试连接...", Toast.LENGTH_SHORT).show();
             connectHust = new ConnectHust(context);
             sharedPreferences= context.getSharedPreferences("userInfo", MODE_PRIVATE);
             connectHust.start(sharedPreferences);
