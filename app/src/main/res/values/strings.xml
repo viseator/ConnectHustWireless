@@ -4,6 +4,6 @@
     <string name="username">用户名/学号</string>
     <string name="password">密码</string>
     <string name="startService">开启自动认证</string>
-    <string name="Intro">使用说明： 输入校园网帐号密码后进行认证，第一次认证后将记住帐号密码。\n若未连接到校园网会自动切换到校园网。\n开启自动认证以后每次检测到连接到校园网后会进行自动认证。（请允许应用后台运行）</string>
+    <string name="Intro">使用说明： 输入校园网帐号密码后进行认证，第一次认证后将记住帐号密码。\n若未连接到校园网会自动切换到校园网。\n开启自动认证以后每次检测到连接到校园网后会进行自动认证。（请允许应用后台运行）\n开源地址:https://github.com/viseator/ConnectHustWireless</string>
     <string name="widget">推荐使用桌面小工具进行一键认证：\n长按桌面-选择桌面小工具-添加本程序</string>
 </resources>
