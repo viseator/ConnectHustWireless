@@ -31,7 +31,7 @@ public class AutoAuthenService extends Service {
         super.onCreate();
         wifiStatesReceiver = new WifiStatesReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.wifi.STATE_CHANGE");
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(wifiStatesReceiver, filter);
     }
 
