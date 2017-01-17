@@ -6,7 +6,7 @@
     >
 
     <Button
-        android:background="@drawable/ic_near_me"
+        android:background="@drawable/icon_widget"
         android:id="@+id/widget_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
