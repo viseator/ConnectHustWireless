@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
+
 /**
  * Created by viseator on 1/16/17.
  * Wu Di
@@ -12,6 +13,8 @@ import android.os.IBinder;
  */
 
 public class AutoAuthenService extends Service {
+
+
 
     private WifiStatesReceiver wifiStatesReceiver;
     @Override
