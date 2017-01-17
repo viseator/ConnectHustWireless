@@ -1,46 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.viseator.connecthustwireless.MainActivity">
 
-    <EditText
-        android:id="@+id/userName"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="@string/username" />
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        >
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userName"
-        android:layout_margin="10dp"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            >
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/password"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        android:text="@string/Connect"
-        android:textSize="25sp" />
+            <EditText
+                android:gravity="center_horizontal"
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:hint="@string/username" />
 
-    <Button
-        android:id="@+id/startServiceButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/startButton"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        android:text="@string/startService"
-        android:textSize="25sp" />
+            <EditText
+                android:id="@+id/password"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/userName"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/startButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/password"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:text="@string/Connect"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/startServiceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startButton"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:text="@string/startService"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/intro"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startServiceButton"
+                android:textSize="18sp"
+                android:text="@string/Intro" />
+
+            <TextView
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/intro"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/widget" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

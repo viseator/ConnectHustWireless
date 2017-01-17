@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 
 /**
  * Created by viseator on 1/16/17.
@@ -20,7 +19,6 @@ public class AutoAuthenService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;

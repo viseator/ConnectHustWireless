@@ -2,6 +2,8 @@ package com.viseator.connecthustwireless;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -62,7 +64,7 @@ public class ConnectHust {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         Log.d(TAG, wifiInfo.getSSID());
         if (!wifiInfo.getSSID().equals("\"HUST_WIRELESS\"")) {
-            Toast.makeText(context, "正在连接到校园网", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "正在切换到校园网", Toast.LENGTH_LONG).show();
             List<ScanResult> scanResults = wifiManager.getScanResults();
             boolean findHust = false;
             for (ScanResult scanResult : scanResults) {
@@ -88,13 +90,13 @@ public class ConnectHust {
             }
 
             wifiManager.enableNetwork(networkId, true);
-            while (!wifiManager.getConnectionInfo().getSSID().equals("\"HUST_WIRELESS\"")) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.
+                    getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo;
+            do {
+                networkInfo = connectivityManager.getActiveNetworkInfo();
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            while (networkInfo == null || !networkInfo.getExtraInfo().equals("\"HUST_WIRELESS\""));
             return true;
         } else {
             return true;

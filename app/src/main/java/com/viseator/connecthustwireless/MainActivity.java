@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,10 +19,7 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "viseator MainActivity";
-    @BindView(R.id.startButton)
-    Button button;
-    @BindView(R.id.startServiceButton)
-    Button startService;
+
     @BindView(R.id.userName)
     EditText userName;
     @BindView(R.id.password)
@@ -49,11 +45,16 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("userName", userName.getText().toString());
         editor.putString("password", password.getText().toString());
         editor.apply();
-        if(connectHust.checkStatus()) connectHust.start(sharedPreferences);
+        if (connectHust.checkStatus()) connectHust.start(sharedPreferences);
     }
 
     @OnClick(R.id.startServiceButton)
     public void startService() {
+        Toast.makeText(this, "已开启自动认证", Toast.LENGTH_SHORT).show();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userName", userName.getText().toString());
+        editor.putString("password", password.getText().toString());
+        editor.apply();
         Intent intent = new Intent(this, AutoAuthenService.class);
         startService(intent);
     }
@@ -62,13 +63,14 @@ public class MainActivity extends AppCompatActivity {
     public void checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,new String[]{
-                    Manifest.permission.ACCESS_COARSE_LOCATION},0);
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
         checkPermission();
     }
 }
